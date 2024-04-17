@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Человек</title>
+</head>
+<body>
+<p th:text="${book.getFullName()} + ', ' + ${book.getBirthYear}">VALUE</p>
+
+<br>
+<hr>
+<form th:method="PATCH" th:action="@{/people/{id}/edit(id=${person.getId()})}" th:object="${person}">
+    <input type="submit" value="Изменить"/>
+</form>
+
+<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
+    <input type="submit" value="Удалить"/>
+</form>
+
+
+</body>
+</html>
