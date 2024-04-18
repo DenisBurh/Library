@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.burhanov.exceptions.AuthorNotFoundException;
 import ru.burhanov.models.Book;
 
+import javax.validation.ValidationException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class BookDAO {
@@ -29,16 +32,22 @@ public class BookDAO {
                 orElse(null);
     }
 
+    public Optional<Book> show(String author) {
+        return jdbcTemplate.query("select * from book where author=?", new BeanPropertyRowMapper<>(Book.class), author)
+                .stream().
+                findAny();
+    }
+
 
     public void save(Book book) {
-        jdbcTemplate.update("insert into book(name,author,year) values(?,?,?)", new BeanPropertyRowMapper<>(Book.class),
+        jdbcTemplate.update("insert into book(name,author,year) values(?,?,?)",
                 book.getName(),
                 book.getAuthor(),
                 book.getYear());
     }
 
     public void update(int id, Book book) {
-        jdbcTemplate.update("update book set name=?, author=?,year=? where id=?", new BeanPropertyRowMapper<>(Book.class),
+        jdbcTemplate.update("update book set name=?, author=?,year=? where id=?",
                 book.getName(),
                 book.getAuthor(),
                 book.getYear(),

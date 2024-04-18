@@ -2,14 +2,22 @@ package ru.burhanov.models;
 
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
 @Component
 public class Book {
     private int id;
 
+    @NotEmpty(message = "Name of book should not be empty")
+    @Size(min = 3, max = 100, message = "Too short or too long name")
     private String name;
-
+    @NotEmpty(message = "Author should not be empty")
+    @Size(min = 3, max = 100, message = "Too short or too long characters for author")
     private String author;
 
+    @Positive(message = "Year should be positive number")
     private int year;
 
     public int getId() {

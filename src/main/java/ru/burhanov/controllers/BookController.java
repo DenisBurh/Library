@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.burhanov.dao.BookDAO;
 import ru.burhanov.models.Book;
+import ru.burhanov.util.BookValidator;
 
 import javax.validation.Valid;
 
@@ -16,10 +17,12 @@ public class BookController {
 
 
     private final BookDAO bookDAO;
+    private final BookValidator bookValidator;
 
     @Autowired
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, BookValidator bookValidator) {
         this.bookDAO = bookDAO;
+        this.bookValidator = bookValidator;
     }
 
     @GetMapping()
@@ -46,11 +49,12 @@ public class BookController {
     @PostMapping()
     public String create(@ModelAttribute("newBook") @Valid Book book,
                          BindingResult bindingResult) {
+        bookValidator.validate(book, bindingResult);
         if (bindingResult.hasErrors()) {
             return "books/new";
         }
         bookDAO.save(book);
-        return "books/new";
+        return "redirect:/books";
     }
 
     @GetMapping("/{id}/edit")

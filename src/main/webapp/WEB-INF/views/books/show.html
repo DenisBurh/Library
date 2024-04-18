@@ -5,7 +5,7 @@
     <title>Книга</title>
 </head>
 <body>
-<p th:text="${book.getName()} + ', ' + ${book.getAuthor} + ', ' +${book.getYear}">VALUE</p>
+<p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' +book.getYear()}">VALUE</p>
 
 <br>
 <hr>
